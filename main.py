@@ -1,3 +1,5 @@
+import os
+
 class ToDoList:
     def __init__(self):
         self.tasks = []
@@ -5,6 +7,7 @@ class ToDoList:
     def add_task(self, task):
         self.tasks.append(task)
         print(f"Task added: {task}")
+        clear_screen()
 
     def view_tasks(self):
         if not self.tasks:
@@ -12,16 +15,22 @@ class ToDoList:
             return
         for i, task in enumerate(self.tasks, 1):
             print(f"{i}. {task}")
+        
 
     def remove_task(self, index):
         if index - 1 < len(self.tasks):
             removed_task = self.tasks.pop(index - 1)
             print(f"Removed task: {removed_task}")
+            clear_screen()
         else:
             print("Invalid task number.")
 
 def main():
     todo_list = ToDoList()
+
+    welcome_page()
+    input()
+    clear_screen()
 
     while True:
         print("\nTo-Do List Application")
@@ -47,6 +56,13 @@ def main():
             break
         else:
             print("Invalid choice. Please try again.")
+
+def welcome_page():
+    print("Welcome to the To Do list application\n\nCreated by Lucie Gallois\n\nPress enter to start")
+
+def clear_screen():
+    if os.name=='nt':
+        _=os.system('cls')
 
 if __name__ == "__main__":
     main()
