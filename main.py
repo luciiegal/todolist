@@ -49,12 +49,13 @@ def main():
 
     while True:
         clear_screen()
-        print("To-Do List Application")
+        print("-- Current Tasks --\n")
+        todo_list.view_tasks()
+        print("\nTo-Do List Application")
         print("1. Add a task")
-        print("2. View tasks")
-        print("3. Remove a task")
-        print("4. Validate a task")
-        print("5. Exit")
+        print("2. Remove a task")
+        print("3. Validate a task")
+        print("4. Exit")
         choice = input("Enter your choice: ")
 
         if choice == '1':
@@ -65,12 +66,6 @@ def main():
             todo_list.add_task(task)
             input("\nPress enter to continue")
         elif choice == '2':
-            clear_screen()
-            print("-- View Tasks -- \n")
-            print("Current tasks: ")
-            todo_list.view_tasks()
-            input("\nPress enter to continue")
-        elif choice == '3':
             try:
                 clear_screen()
                 print("-- Remove a task -- \n")
@@ -82,7 +77,7 @@ def main():
             except ValueError:
                 print("Please enter a valid number.")
                 input("\nPress enter to continue")
-        elif choice == '4':
+        elif choice == '3':
             try:
                 clear_screen()
                 print("-- Validate a task --\n")
@@ -94,11 +89,12 @@ def main():
             except ValueError:
                 print("Please enter a valid number.")
                 input("\nPress enter to continue")
-        elif choice == '5':
+        elif choice == '4':
             print("Exiting the application.")
             break
         else:
-            print("Invalid choice. Please try again.")
+            print("Invalid choice. Press enter to try again.")
+            input()
 
 def welcome_page():
     clear_screen()
