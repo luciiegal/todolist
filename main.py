@@ -1,14 +1,14 @@
 import os
 import pyfiglet
+import readchar
 
-# We implement a task class to manage the validation of a task
 class Task:
-    def __init__(self,text):
-        self.text=text
-        self.validate=False
+    def __init__(self, text):
+        self.text = text
+        self.validate = False
     
     def validate_task(self):
-        self.validate=True
+        self.validate = True
         return self
     
 class ToDoList:
@@ -25,7 +25,6 @@ class ToDoList:
             return
         for i, task in enumerate(self.tasks, 1):
             print(f"{i}. {task.text}, validate: {task.validate}")
-        
 
     def remove_task(self, index):
         if index - 1 < len(self.tasks):
@@ -34,80 +33,73 @@ class ToDoList:
         else:
             print("Invalid task number.")
 
-    def validate(self,index):
+    def validate_task_by_index(self, index):
         if index - 1 < len(self.tasks):
-            validate_task=self.tasks[index-1].validate_task()
+            validate_task = self.tasks[index - 1].validate_task()
             print(f"The task: '{validate_task.text}' has been validated")
         else:
             print("Invalid task number.")
+
+def welcome_page():
+    clear_screen()
+    title = pyfiglet.figlet_format("TO DO LIST APP", font="starwars")
+    print(title)
+    print("-- Open Source by Lucie Gallois --\n\nPress any key to continue")
+
+def clear_screen():
+    os.system('cls' if os.name == 'nt' else 'clear')
+
 def main():
     todo_list = ToDoList()
-
     welcome_page()
-    input()
+    readchar.readkey()  # To proceed from welcome page
     clear_screen()
+
+    options = ["Add a task", "Remove a task", "Validate a task", "Exit"]
+    current_option = 0
 
     while True:
         clear_screen()
         print("-- Current Tasks --\n")
         todo_list.view_tasks()
+
         print("\nTo-Do List Application")
-        print("1. Add a task")
-        print("2. Remove a task")
-        print("3. Validate a task")
-        print("4. Exit")
-        choice = input("Enter your choice: ")
+        for index, option in enumerate(options):
+            prefix = ">> " if index == current_option else "   "
+            print(f"{prefix}{option}")
 
-        if choice == '1':
-            clear_screen()
-            print("-- Add a task -- \n")
-            text = input("Enter a task: ")
-            task=Task(text)
-            todo_list.add_task(task)
-            input("\nPress enter to continue")
-        elif choice == '2':
-            try:
+        key = readchar.readkey()
+        if key == readchar.key.UP and current_option > 0:
+            current_option -= 1
+        elif key == readchar.key.DOWN and current_option < len(options) - 1:
+            current_option += 1
+        elif key == readchar.key.ENTER:
+            if current_option == 0:
                 clear_screen()
-                print("-- Remove a task -- \n")
-                print("Current Tasks: ")
-                todo_list.view_tasks()
-                index = int(input("\nEnter task number to remove: "))
-                todo_list.remove_task(index)
-                input("\nPress enter to continue")
-            except ValueError:
-                print("Please enter a valid number.")
-                input("\nPress enter to continue")
-        elif choice == '3':
-            try:
+                task_text = input("Enter a task: ")
+                todo_list.add_task(Task(task_text))
+                readchar.readkey()
+            elif current_option == 1:
                 clear_screen()
-                print("-- Validate a task --\n")
-                print("Current Tasks: ")
                 todo_list.view_tasks()
-                index = int(input("\nEnter the number of the task you've accomplished: "))
-                todo_list.validate(index)
-                input("\nPress enter to continue")
-            except ValueError:
-                print("Please enter a valid number.")
-                input("\nPress enter to continue")
-        elif choice == '4':
-            print("Exiting the application.")
-            break
-        else:
-            print("Invalid choice. Press enter to try again.")
-            input()
-
-def welcome_page():
-    clear_screen()
-    #print("Welcome to the To Do list application\n\nCreated by Lucie Gallois\n\nPress enter to start")
-    pyfiglet_obj=pyfiglet.Figlet(font="starwars",width=130)
-    title=pyfiglet_obj.renderText("TO DO LIST APP")
-    print(title)
-    print("-- Open Source by Lucie Gallois --\n\nPress enter to continue")
-
-def clear_screen():
-    if os.name=='nt':
-        _=os.system('cls')
+                try:
+                    index = int(input("\nEnter task number to remove: "))
+                    todo_list.remove_task(index)
+                except ValueError:
+                    print("Please enter a valid number.")
+                readchar.readkey()
+            elif current_option == 2:
+                clear_screen()
+                todo_list.view_tasks()
+                try:
+                    index = int(input("\nEnter the number of the task you've accomplished: "))
+                    todo_list.validate_task_by_index(index)
+                except ValueError:
+                    print("Please enter a valid number.")
+                readchar.readkey()
+            elif current_option == 3:
+                print("Exiting the application.")
+                break
 
 if __name__ == "__main__":
     main()
-
