@@ -99,7 +99,7 @@ def main():
 def welcome_page():
     clear_screen()
     #print("Welcome to the To Do list application\n\nCreated by Lucie Gallois\n\nPress enter to start")
-    pyfiglet_obj=pyfiglet.Figlet(font="starwars",width=130)
+    pyfiglet_obj=pyfiglet.Figlet(font="bubble",width=130)
     title=pyfiglet_obj.renderText("TO DO LIST APP")
     print(title)
     print("-- Open Source by Lucie Gallois --\n\nPress enter to continue")
